@@ -112,26 +112,26 @@ ENV DYNAMORIO_HOME=/home/$USERNAME/DynamoRIO-Linux-9.0.19314
 # Comment out if you don't use scarab at all and don't have ssh key permitted to clone 'scarab_hlitz'
 # RUN cd /home/$USERNAME && git clone -b decoupled_fe git@github.com:hlitz/scarab_hlitz.git scarab
 # #  RUN cd /home/$USERNAME && https://github.com/kofyou/scarab.git scarab
-RUN cd /home/$USERNAME && git clone https://github.com/kofyou/scarab.git
+# RUN cd /home/$USERNAME && git clone https://github.com/kofyou/scarab.git
 
 
-# # Install Scarab dependencies
-RUN pip3 install -r /home/$USERNAME/scarab/bin/requirements.txt
-RUN gdown 'https://drive.google.com/uc?id=1xD4zEEgg05CQEI9e5CQO4F5rRfJdfLZV' -O pinplay35.zip
-RUN unzip pinplay35.zip
-RUN rm pinplay35.zip
+# # # Install Scarab dependencies
+# RUN pip3 install -r /home/$USERNAME/scarab/bin/requirements.txt
+# RUN gdown 'https://drive.google.com/uc?id=1xD4zEEgg05CQEI9e5CQO4F5rRfJdfLZV' -O pinplay35.zip
+# RUN unzip pinplay35.zip
+# RUN rm pinplay35.zip
 
-# Build Scarab
-ENV PIN_ROOT /home/$USERNAME/pinplay-drdebug-3.5-pin-3.5-97503-gac534ca30-gcc-linux
-ENV SCARAB_ENABLE_PT_MEMTRACE 1
-ENV SCARAB_ENABLE_MEMTRACE 1
-ENV LD_LIBRARY_PATH /home/$USERNAME/pinplay-drdebug-3.5-pin-3.5-97503-gac534ca30-gcc-linux/extras/xed-intel64/lib
-ENV LD_LIBRARY_PATH /home/$USERNAME/pinplay-drdebug-3.5-pin-3.5-97503-gac534ca30-gcc-linux/intel64/runtime/pincrt:$LD_LIBRARY_PATH
+# # Build Scarab
+# ENV PIN_ROOT /home/$USERNAME/pinplay-drdebug-3.5-pin-3.5-97503-gac534ca30-gcc-linux
+# ENV SCARAB_ENABLE_PT_MEMTRACE 1
+# ENV SCARAB_ENABLE_MEMTRACE 1
+# ENV LD_LIBRARY_PATH /home/$USERNAME/pinplay-drdebug-3.5-pin-3.5-97503-gac534ca30-gcc-linux/extras/xed-intel64/lib
+# ENV LD_LIBRARY_PATH /home/$USERNAME/pinplay-drdebug-3.5-pin-3.5-97503-gac534ca30-gcc-linux/intel64/runtime/pincrt:$LD_LIBRARY_PATH
 
-# # The root of the Scarab repository, as used by scarab_paths.py (found in scarab/bin/scarab_globals) 
-# ENV SIMDIR /home/$USERNAME/scarab
+# # # The root of the Scarab repository, as used by scarab_paths.py (found in scarab/bin/scarab_globals) 
+# # ENV SIMDIR /home/$USERNAME/scarab
 
-RUN cd /home/$USERNAME/scarab/src && make
+# RUN cd /home/$USERNAME/scarab/src && make
 # RUN mkdir /home/$USERNAME/exp
 # RUN mkdir -p /home/$USERNAME/traces
 
@@ -152,133 +152,133 @@ RUN cd /home/$USERNAME/scarab/src && make
 # RUN rm /home/$USERNAME/.ssh/id_rsa && rm /home/$USERNAME/.ssh/known_hosts
 
 
-# ########################
-# ##### SETUP LIBMPC #####
-# ########################
+########################
+##### SETUP LIBMPC #####
+########################
 
-# ##############################
-# # Core tools
-# ##############################
+##############################
+# Core tools
+##############################
 
-# # Install programs as 'root' user.
-# user root
-# RUN apt install  -y -qq --no-install-recommends build-essential manpages-dev software-properties-common && \
-#     add-apt-repository ppa:ubuntu-toolchain-r/test && \
-#     apt-get update -y -qq &&\
-#     apt-get install -y -qq --no-install-recommends \
-#     apt-utils \
-#     lsb-release \
-#     build-essential \
-#     software-properties-common \
-#     ca-certificates \
-#     gpg-agent \
-#     wget \
-#     git \
-#     cmake \
-#     lcov \
-#     gcc-11 \
-#     g++-11 \
-#     # clang \
-#     # clang-tidy \
-#     # clang-format \
-#     libomp-dev \
-#     sudo \
-#     gosu \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
+# Install programs as 'root' user.
+user root
+RUN apt install  -y -qq --no-install-recommends build-essential manpages-dev software-properties-common && \
+    add-apt-repository ppa:ubuntu-toolchain-r/test && \
+    apt-get update -y -qq &&\
+    apt-get install -y -qq --no-install-recommends \
+    apt-utils \
+    lsb-release \
+    build-essential \
+    software-properties-common \
+    ca-certificates \
+    gpg-agent \
+    wget \
+    git \
+    cmake \
+    lcov \
+    gcc-11 \
+    g++-11 \
+    # clang \
+    # clang-tidy \
+    # clang-format \
+    libomp-dev \
+    sudo \
+    gosu \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# # RUN 
-# #     apt update \ 
-# #     && sudo apt install -y -qq --no-install-recommends gcc-11 g++-11
-
-
-# ##############################
-# # Non-root user Setup
-# ##############################
-# RUN echo $USERNAME ALL=\(ALL\) NOPASSWD:ALL >> /etc/sudoers \
-#     && touch /home/$USERNAME/.sudo_as_admin_successful \
-#     && gosu $USERNAME mkdir -p /home/$USERNAME/.xdg_runtime_dir
-# ENV XDG_RUNTIME_DIR=/home/$USERNAME/.xdg_runtime_dir
-
-# ##############################
-# # libMPC++
-# ##############################
-# # Downloads and unzips lipmpc into the home directory.
-# USER $USERNAME
-# RUN cd ~ && wget https://github.com/nicolapiccinelli/libmpc/archive/refs/tags/0.4.0.tar.gz \
-#     && tar -xzvf 0.4.0.tar.gz \
-#     && rm 0.4.0.tar.gz
-
-# USER root
-
-# ##############################
-# # Eigen
-# ##############################
-# RUN apt-get update -y -qq \
-#     && apt-get install -y -qq --no-install-recommends \
-#     libeigen3-dev \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
+# RUN 
+#     apt update \ 
+#     && sudo apt install -y -qq --no-install-recommends gcc-11 g++-11
 
 
-# ##############################
-# # NL Optimization
-# ##############################
-# RUN git clone https://github.com/stevengj/nlopt /tmp/nlopt \
-#     && cd /tmp/nlopt \
-#     && mkdir build \
-#     && cd build \
-#     && cmake \
-#     -D CMAKE_BUILD_TYPE=Release \
-#     -D NLOPT_PYTHON=OFF \
-#     -D NLOPT_OCTAVE=OFF \
-#     -D NLOPT_MATLAB=OFF \
-#     -D NLOPT_GUILE=OFF \
-#     -D NLOPT_SWIG=OFF \
-#     .. \
-#     && make -j$(($(nproc)-1)) \
-#     && make install \
-#     && rm -rf /tmp/*
+##############################
+# Non-root user Setup
+##############################
+RUN echo $USERNAME ALL=\(ALL\) NOPASSWD:ALL >> /etc/sudoers \
+    && touch /home/$USERNAME/.sudo_as_admin_successful \
+    && gosu $USERNAME mkdir -p /home/$USERNAME/.xdg_runtime_dir
+ENV XDG_RUNTIME_DIR=/home/$USERNAME/.xdg_runtime_dir
+
+##############################
+# libMPC++
+##############################
+# Downloads and unzips lipmpc into the home directory.
+USER $USERNAME
+RUN cd ~ && wget https://github.com/nicolapiccinelli/libmpc/archive/refs/tags/0.4.0.tar.gz \
+    && tar -xzvf 0.4.0.tar.gz \
+    && rm 0.4.0.tar.gz
+
+USER root
+
+##############################
+# Eigen
+##############################
+RUN apt-get update -y -qq \
+    && apt-get install -y -qq --no-install-recommends \
+    libeigen3-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 
-# ##############################
-# # OSQP Solver
-# ##############################
-# RUN git clone --depth 1 --branch v0.6.3 --recursive https://github.com/osqp/osqp /tmp/osqp \
-#     && cd /tmp/osqp \
-#     && mkdir build \
-#     && cd build \
-#     && cmake \ 
-#     -G "Unix Makefiles" \
-#     .. \
-#     && make -j$(($(nproc)-1)) \
-#     && make install \
-#     && rm -rf /tmp/*
+##############################
+# NL Optimization
+##############################
+RUN git clone https://github.com/stevengj/nlopt /tmp/nlopt \
+    && cd /tmp/nlopt \
+    && mkdir build \
+    && cd build \
+    && cmake \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D NLOPT_PYTHON=OFF \
+    -D NLOPT_OCTAVE=OFF \
+    -D NLOPT_MATLAB=OFF \
+    -D NLOPT_GUILE=OFF \
+    -D NLOPT_SWIG=OFF \
+    .. \
+    && make -j$(($(nproc)-1)) \
+    && make install \
+    && rm -rf /tmp/*
 
 
-# ##############################
-# # Catch2
-# ##############################
-# RUN git clone https://github.com/catchorg/Catch2.git /tmp/Catch2 \
-#     && cd /tmp/Catch2 \
-#     && mkdir build \
-#     && cd build \
-#     && cmake \ 
-#     -D BUILD_TESTING=OFF \
-#     .. \
-#     && make -j$(($(nproc)-1)) \
-#     && make install \
-#     && rm -rf /tmp/*
+##############################
+# OSQP Solver
+##############################
+RUN git clone --depth 1 --branch v0.6.3 --recursive https://github.com/osqp/osqp /tmp/osqp \
+    && cd /tmp/osqp \
+    && mkdir build \
+    && cd build \
+    && cmake \ 
+    -G "Unix Makefiles" \
+    .. \
+    && make -j$(($(nproc)-1)) \
+    && make install \
+    && rm -rf /tmp/*
 
-# # # (Optional) Set Clang as the default compiler
-# # ENV CC=/usr/bin/clang
-# # ENV CXX=/usr/bin/clang++
 
-# # Update the linker to recognize recently added libraries. 
-# # See: https://stackoverflow.com/questions/480764/linux-error-while-loading-shared-libraries-cannot-open-shared-object-file-no-s
-# RUN ldconfig
+##############################
+# Catch2
+##############################
+RUN git clone https://github.com/catchorg/Catch2.git /tmp/Catch2 \
+    && cd /tmp/Catch2 \
+    && mkdir build \
+    && cd build \
+    && cmake \ 
+    -D BUILD_TESTING=OFF \
+    .. \
+    && make -j$(($(nproc)-1)) \
+    && make install \
+    && rm -rf /tmp/*
 
-# USER $USERNAME
+# # (Optional) Set Clang as the default compiler
+# ENV CC=/usr/bin/clang
+# ENV CXX=/usr/bin/clang++
 
-# # 
+# Update the linker to recognize recently added libraries. 
+# See: https://stackoverflow.com/questions/480764/linux-error-while-loading-shared-libraries-cannot-open-shared-object-file-no-s
+RUN ldconfig
+
+USER $USERNAME
+
+# 
 # COPY --chown=$USERNAME docker_user_home/.bashrc /home/$USERNAME/.bashrc
