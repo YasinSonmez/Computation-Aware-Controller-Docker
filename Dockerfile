@@ -73,13 +73,13 @@ USER $USERNAME
 # # Optional: Clean up tarball after extraction
 # RUN cd /home/$USERNAME && rm DynamoRIO-Linux-9.0.19314.tar.gz
 
-RUN cd ~ && wget https://github.com/DynamoRIO/dynamorio/releases/download/cronbuild-9.0.19314/DynamoRIO-Linux-9.0.19314.tar.gz \
-    && tar -xzvf DynamoRIO-Linux-9.0.19314.tar.gz \
-    && rm DynamoRIO-Linux-9.0.19314.tar.gz
+# RUN cd ~ && wget https://github.com/DynamoRIO/dynamorio/releases/download/cronbuild-9.0.19314/DynamoRIO-Linux-9.0.19314.tar.gz \
+#     && tar -xzvf DynamoRIO-Linux-9.0.19314.tar.gz \
+#     && rm DynamoRIO-Linux-9.0.19314.tar.gz
 
-USER root
+# USER root
 
-ENV DYNAMORIO_HOME=/home/$USERNAME/DynamoRIO-Linux-9.0.19314
+# ENV DYNAMORIO_HOME=/home/$USERNAME/DynamoRIO-Linux-9.0.19314
 
 
 # # Build DynamoRIO package for fingerprint client
