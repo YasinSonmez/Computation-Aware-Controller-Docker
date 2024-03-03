@@ -16,9 +16,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libboost-dev \
     zlib1g-dev \
     libsnappy-dev \
-    liblz4-dev \
+    #liblz4-dev \
     g++-9 \
-    g++-9-multilib \
+    #g++-9-multilib \
     doxygen \
     libconfig++-dev \
     libboost-dev \
