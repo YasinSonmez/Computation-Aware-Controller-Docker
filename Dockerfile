@@ -16,9 +16,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libboost-dev \
     zlib1g-dev \
     libsnappy-dev \
-    liblz4-dev \
+    #liblz4-dev \
     g++-9 \
-    g++-9-multilib \
+    #g++-9-multilib \
     doxygen \
     libconfig++-dev \
     libboost-dev \
@@ -73,13 +73,13 @@ USER $USERNAME
 # # Optional: Clean up tarball after extraction
 # RUN cd /home/$USERNAME && rm DynamoRIO-Linux-9.0.19314.tar.gz
 
-RUN cd ~ && wget https://github.com/DynamoRIO/dynamorio/releases/download/cronbuild-9.0.19314/DynamoRIO-Linux-9.0.19314.tar.gz \
-    && tar -xzvf DynamoRIO-Linux-9.0.19314.tar.gz \
-    && rm DynamoRIO-Linux-9.0.19314.tar.gz
+# RUN cd ~ && wget https://github.com/DynamoRIO/dynamorio/releases/download/cronbuild-9.0.19314/DynamoRIO-Linux-9.0.19314.tar.gz \
+#     && tar -xzvf DynamoRIO-Linux-9.0.19314.tar.gz \
+#     && rm DynamoRIO-Linux-9.0.19314.tar.gz
 
-USER root
+# USER root
 
-ENV DYNAMORIO_HOME=/home/$USERNAME/DynamoRIO-Linux-9.0.19314
+# ENV DYNAMORIO_HOME=/home/$USERNAME/DynamoRIO-Linux-9.0.19314
 
 
 # # Build DynamoRIO package for fingerprint client
