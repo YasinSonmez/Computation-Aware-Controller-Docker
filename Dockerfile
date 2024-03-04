@@ -184,6 +184,7 @@ RUN apt install  -y -qq --no-install-recommends build-essential manpages-dev sof
     libomp-dev \
     sudo \
     gosu \
+    libsfml-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
