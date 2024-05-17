@@ -81,18 +81,6 @@ RUN cd $RESOURCES_DIR && \
 # # Compile Scarab
 RUN cd $RESOURCES_DIR/scarab/src && make
 
-# change to g++-11
-# Install GCC 11 and G++ 11
-RUN apt-get install -y gcc-11 g++-11
-
-# Set up update-alternatives to configure gcc and g++ commands
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 2 \
- && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 2
-
-# Optionally set GCC 11 and G++ 11 as the default compilers
-RUN update-alternatives --set gcc /usr/bin/gcc-11 \
- && update-alternatives --set g++ /usr/bin/g++-11
-
 ########################
 ##### SETUP LIBMPC #####
 ########################
@@ -128,6 +116,18 @@ RUN apt install  -y -qq --no-install-recommends build-essential manpages-dev sof
     libsfml-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# change to g++-11
+# Install GCC 11 and G++ 11
+RUN apt-get install -y gcc-11 g++-11
+
+# Set up update-alternatives to configure gcc and g++ commands
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 2 \
+ && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 2
+
+# Optionally set GCC 11 and G++ 11 as the default compilers
+RUN update-alternatives --set gcc /usr/bin/gcc-11 \
+ && update-alternatives --set g++ /usr/bin/g++-11
 
 ##############################
 # Non-root user Setup
