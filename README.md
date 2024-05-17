@@ -16,7 +16,7 @@ Running the Docker Container:
 
 - Standard build:
   ```
-  docker run -it --name <image_name>_container1 <image_name> /bin/bash
+  docker run -it --name <container_name> <image_name> /bin/bash
   ```
 - On arm64 (M1/M2 Mac) to emulate amd64:
   ```
